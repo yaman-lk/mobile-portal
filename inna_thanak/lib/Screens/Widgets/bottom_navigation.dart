@@ -6,26 +6,36 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+  setState(() {
+    _selectedIndex = index;
+  });
+}
+
   @override
   Widget build(BuildContext context) {
-    return  BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add_circle_outline),
-          title: Text('ADD'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_border),
-          title: Text('FAVORITE'),
-        ),
-      ],
-      // currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      // onTap: _onItemTapped,
+    return  Container(
+      child: BottomNavigationBar(
+        backgroundColor: Colors.blueAccent,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle_outline),
+            title: Text('ADD'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            title: Text('FAVORITE'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }

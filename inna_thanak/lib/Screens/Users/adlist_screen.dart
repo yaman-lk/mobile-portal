@@ -11,6 +11,16 @@ class _AdListState extends State<AdList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.person),
+        title: Text("Inna Thanak"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          )
+        ],
+      ),
       body: _body(),
       bottomNavigationBar: BottomNavigation(),
     );
