@@ -12,6 +12,7 @@ class _AdListState extends State<AdList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         leading: Icon(Icons.person),
         title: Text("Inna Thanak"),
         actions: <Widget>[
