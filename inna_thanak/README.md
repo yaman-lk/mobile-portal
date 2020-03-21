@@ -37,7 +37,9 @@ flutter run
 ````
 
 # Set-up instructions
-1. Clone the repository
-2.Make a branch using `git checkpot -b <brnchname> ` (ex: adam-dev)
-3.push the changes with relevent upstream
+1. Clone the repository.
+
+2.Make a branch using `git checkpot -b <brnchname> ` (ex: adam-dev).
+
+3.push the changes with relevent upstream.
 
