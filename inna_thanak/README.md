@@ -14,7 +14,7 @@ You shold have a IDE (ex: android studio,vs code) with flutter installed in it.
 
 Clone the repository.
 ```
-git clone https://github.com/tourist2townie/flutter-app.git
+https://github.com/yaman-lk/mobile-portal.git
 ```
 
 Open the repository from the IDE ypu are using.(ex: android studio).
@@ -25,7 +25,7 @@ $ Get Packages
 # How to use
 In a new terminal navigate to 
 ````
-flutter-app
+inna-thanak
 ````
 directory and build flutter the application. Run the command
 ````
@@ -35,3 +35,9 @@ or run the flutter application
 ````
 flutter run
 ````
+
+# Set-up instructions
+1. Clone the repository
+2.Make a branch using `git checkpot -b <brnchname> ` (ex: adam-dev)
+3.push the changes with relevent upstream
+
