@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
 import './singlead_screen.dart';
+import 'package:image_fade/image_fade.dart';
 
 class AdList extends StatefulWidget {
   @override
@@ -53,18 +54,47 @@ class _AdListState extends State<AdList> {
                 SizedBox(
                   height: 10.0,
                 ),
-                Container(
+                ImageFade(
                   height: MediaQuery.of(context).size.height / 4,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(
-                              "http://www.bayfieldinn.com/sites/bayfieldinn.com/files/content/rentals/DSC_0084.JPG"))),
+                  fit: BoxFit.cover,
+                  errorBuilder:
+                      (BuildContext context, Widget child, dynamic exception) {
+                    return Container(
+                      color: Color(0xFF6F6D6A),
+                      child: Center(
+                          child: Icon(Icons.warning,
+                              color: Colors.black26, size: 128.0)),
+                    );
+                  },
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent event) {
+                    if (event == null) {
+                      return child;
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                          value: event.expectedTotalBytes == null
+                              ? 0.0
+                              : event.cumulativeBytesLoaded /
+                                  event.expectedTotalBytes),
+                    );
+                  },
+                  placeholder: Container(
+                    color: Color(0xFFCFCDCA),
+                    child: Center(
+                        child: Icon(
+                      Icons.photo,
+                      color: Colors.white30,
+                      size: 128.0,
+                    )),
+                  ),
+                  image: NetworkImage(
+                      "http://www.bayfieldinn.com/sites/bayfieldinn.com/files/content/rentals/DSC_0084.JPG"),
                 ),
                 ListTile(
                   leading: Text("Rooms: 1 Beds: 3 Baths: 2"),
                   trailing: Text(
-                    "Rs. 2000/month",
+                    "Rs. 2000/month", 
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 )
