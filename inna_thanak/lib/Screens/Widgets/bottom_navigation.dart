@@ -17,7 +17,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return  Container(
       child: BottomNavigationBar(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color(0xFF192A56),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -34,6 +34,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),
     );
