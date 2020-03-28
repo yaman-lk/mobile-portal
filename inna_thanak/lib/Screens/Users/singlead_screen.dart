@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inna_thanak/Screens/Category%20models/annex_model.dart';
 import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 
@@ -8,6 +9,9 @@ class SingleAd extends StatefulWidget {
 }
 
 class _SingleAdState extends State<SingleAd> {
+
+  static final allAnnexs = Annex.fetchAll();
+  final singleAnnex = allAnnexs[2];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +30,21 @@ class _SingleAdState extends State<SingleAd> {
         _corouselImages(),
         SizedBox(height: 5.0),
         _favButton(),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            singleAnnex.isKitchen == true?Chip(label: Text("Kitchen",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56),):Chip(label: Text("No kitchen")),
+            singleAnnex.isAC == true?Chip(label: Text("With A/C",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56),):Chip(label: Text("Without A/C")),
+            singleAnnex.isFurniture == true?Chip(label: Text("Furniture",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56)):Chip(label: Text("No furniture")),
+            singleAnnex.isNegotiable == true?Chip(label: Text("Negotiable",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56)):Chip(label: Text("No bargain")),
+          ],
+        ),
         Card(
           child: ListTile(
             leading:
-                Text("Price :", style: TextStyle(fontWeight: FontWeight.bold)),
-            trailing: Text("Rs. 2000/month",
+                Text("Rental :", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("Rs. ${singleAnnex.rental}/month",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
@@ -41,7 +55,7 @@ class _SingleAdState extends State<SingleAd> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             trailing:
-                Text("Rs. 2000", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("Rs. ${singleAnnex.keyMoney}", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -51,7 +65,7 @@ class _SingleAdState extends State<SingleAd> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             trailing:
-                Text("2", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${singleAnnex.rooms}", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -61,17 +75,17 @@ class _SingleAdState extends State<SingleAd> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             trailing:
-                Text("2", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${singleAnnex.bathrooms}", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
           child: ListTile(
             leading: Text(
-              "Beds :",
+              "For :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             trailing:
-                Text("2", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${singleAnnex.forWhome}", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -81,7 +95,7 @@ class _SingleAdState extends State<SingleAd> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             trailing:
-                Text("_description here", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${singleAnnex.desctiption}", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         SizedBox(height: 20,),
@@ -90,7 +104,7 @@ class _SingleAdState extends State<SingleAd> {
             height: 50,
             color: Colors.green,
             child: Center(
-              child: Text("Contact number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+              child: Text("${singleAnnex.contactNumber}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             )
           ),
         )
