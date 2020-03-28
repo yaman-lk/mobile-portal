@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:inna_thanak/Screens/Category%20models/annex_model.dart';
 import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:inna_thanak/Screens/Widgets/features_chips.dart';
+import 'package:inna_thanak/models/annex_model.dart';
 
 class SingleAd extends StatefulWidget {
   @override
@@ -30,14 +31,21 @@ class _SingleAdState extends State<SingleAd> {
         _corouselImages(),
         SizedBox(height: 5.0),
         _favButton(),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            singleAnnex.isKitchen == true?Chip(label: Text("Kitchen",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56),):Chip(label: Text("No kitchen")),
-            singleAnnex.isAC == true?Chip(label: Text("With A/C",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56),):Chip(label: Text("Without A/C")),
-            singleAnnex.isFurniture == true?Chip(label: Text("Furniture",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56)):Chip(label: Text("No furniture")),
-            singleAnnex.isNegotiable == true?Chip(label: Text("Negotiable",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56)):Chip(label: Text("No bargain")),
+            singleAnnex.isKitchen == true
+                ? FeaturedChip("Kitchen", Color(0xFF192A56))
+                : FeaturedChip("No kitchen", Colors.black),
+            singleAnnex.isAC == true
+                ? FeaturedChip("With A/C", Color(0xFF192A56))
+                : Chip(label: Text("Without A/C")),
+            singleAnnex.isFurniture == true
+                ? FeaturedChip("With furniture", Color(0xFF192A56))
+                : FeaturedChip("Without furniture", Colors.black),
+            singleAnnex.isNegotiable == true
+                ? FeaturedChip("Neotiable", Color(0xFF192A56))
+                : Chip(label: Text("No bargain")),
           ],
         ),
         Card(
@@ -54,8 +62,8 @@ class _SingleAdState extends State<SingleAd> {
               "Keymoney :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("Rs. ${singleAnnex.keyMoney}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("Rs. ${singleAnnex.keyMoney}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -64,8 +72,8 @@ class _SingleAdState extends State<SingleAd> {
               "Rooms :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.rooms}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleAnnex.rooms}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -74,8 +82,8 @@ class _SingleAdState extends State<SingleAd> {
               "Barthrooms :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.bathrooms}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleAnnex.bathrooms}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -84,8 +92,8 @@ class _SingleAdState extends State<SingleAd> {
               "For :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.forWhome}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleAnnex.forWhome}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -94,19 +102,23 @@ class _SingleAdState extends State<SingleAd> {
               "Description :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.desctiption}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleAnnex.desctiption}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         Center(
           child: Container(
-            height: 50,
-            color: Colors.green,
-            child: Center(
-              child: Text("${singleAnnex.contactNumber}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-            )
-          ),
+              height: 50,
+              color: Colors.green,
+              child: Center(
+                child: Text(
+                  "${singleAnnex.contactNumber}",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              )),
         )
       ],
     );
