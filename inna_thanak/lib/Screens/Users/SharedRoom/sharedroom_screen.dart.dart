@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:image_fade/image_fade.dart';
+import 'package:inna_thanak/Screens/Users/SharedRoom/single_sharedroom.dart';
 import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
 import 'package:inna_thanak/Utils/network.dart';
-import './singlead_screen.dart';
-import 'package:image_fade/image_fade.dart';
-import '../Category models/annex_model.dart';
+import 'package:inna_thanak/models/sharedroom_model.dart';
 
-class AdList extends StatefulWidget {
+class SharedRoomAdlist extends StatefulWidget {
   @override
-  _AdListState createState() => _AdListState();
+  _SharedRoomAdlistState createState() => _SharedRoomAdlistState();
 }
 
-class _AdListState extends State<AdList> {
-  static final annexs = Annex.fetchAll();
-
+class _SharedRoomAdlistState extends State<SharedRoomAdlist> {
+  static final sharedrooms = SharedRoom.fetchAll();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+    appBar: AppBar(
         backgroundColor: Color(0xFF192A56),
         leading: Icon(Icons.person),
         title: Text("Inna Thanak"),
@@ -32,14 +31,14 @@ class _AdListState extends State<AdList> {
     );
   }
 
-  Widget _body() {
+  Widget _body(){
     return _singleAdCard();
   }
 
-  Widget _singleAdCard() {
-    return annexs.length != null && annexs != null && annexs.length > 0
+  Widget _singleAdCard(){
+     return sharedrooms.length != null && sharedrooms != null && sharedrooms.length > 0
         ? ListView.builder(
-            itemCount: annexs.length != null ? annexs.length : 0,
+            itemCount: sharedrooms.length != null ? sharedrooms.length : 0,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: Container(
@@ -50,7 +49,7 @@ class _AdListState extends State<AdList> {
                             Container(
                                 alignment: new FractionalOffset(0.0, 1.0),
                                 child: Text(
-                                  annexs[index].location,
+                                  sharedrooms[index].location,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20.0),
@@ -97,22 +96,22 @@ class _AdListState extends State<AdList> {
                             ),
                             ListTile(
                               leading: Text(
-                                " Rooms: ${annexs[index].rooms} \n Bathrooms: ${annexs[index].bathrooms}\n For: ${annexs[index].forWhome}",
+                                " Rooms: ${sharedrooms[index].beds} \n Bathrooms: ${sharedrooms[index].bathrooms}\n For: ${sharedrooms[index].forWhome}",
                                 style: TextStyle(fontSize: 15),
                               ),
                               trailing: Text(
-                                "Rs. ${annexs[index].rental}/month",
+                                "Rs. ${sharedrooms[index].rental}/month",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             )
                           ],
                         ),
                         onTap: () {
-                          NetworkDataPaser.passedID = annexs[index].id;
+                          NetworkDataPaser.passedID = sharedrooms[index].id;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SingleAd()));
+                                  builder: (context) => SingleSharedRoom()));
                           print(NetworkDataPaser.passedID);
                         })),
               );
@@ -120,4 +119,4 @@ class _AdListState extends State<AdList> {
           )
         : Container();
   }
-}
+  }

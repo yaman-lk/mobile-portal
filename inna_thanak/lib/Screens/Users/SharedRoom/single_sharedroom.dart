@@ -1,20 +1,21 @@
-import 'package:flutter/material.dart';
-import 'package:inna_thanak/Screens/Category%20models/annex_model.dart';
-import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter/material.dart';
+import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
+import 'package:inna_thanak/Screens/Widgets/features_chips.dart';
+import 'package:inna_thanak/models/sharedroom_model.dart';
 
-class SingleAd extends StatefulWidget {
+class SingleSharedRoom extends StatefulWidget {
   @override
-  _SingleAdState createState() => _SingleAdState();
+  _SingleSharedRoomState createState() => _SingleSharedRoomState();
 }
 
-class _SingleAdState extends State<SingleAd> {
+class _SingleSharedRoomState extends State<SingleSharedRoom> {
 
-  static final allAnnexs = Annex.fetchAll();
-  final singleAnnex = allAnnexs[2];
+  static final allSharedRooms = SharedRoom.fetchAll();
+  final singleSharedRoom = allSharedRooms[2];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+   return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF192A56),
       ),
@@ -22,7 +23,6 @@ class _SingleAdState extends State<SingleAd> {
       bottomNavigationBar: BottomNavigation(),
     );
   }
-
   Widget _body() {
     return ListView(
       children: <Widget>[
@@ -30,21 +30,25 @@ class _SingleAdState extends State<SingleAd> {
         _corouselImages(),
         SizedBox(height: 5.0),
         _favButton(),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            singleAnnex.isKitchen == true?Chip(label: Text("Kitchen",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56),):Chip(label: Text("No kitchen")),
-            singleAnnex.isAC == true?Chip(label: Text("With A/C",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56),):Chip(label: Text("Without A/C")),
-            singleAnnex.isFurniture == true?Chip(label: Text("Furniture",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56)):Chip(label: Text("No furniture")),
-            singleAnnex.isNegotiable == true?Chip(label: Text("Negotiable",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),backgroundColor: Color(0xFF192A56)):Chip(label: Text("No bargain")),
+            singleSharedRoom.isfans == true
+                ? FeaturedChip("With fans", Color(0xFF192A56))
+                : FeaturedChip("Without fans", Colors.black),
+            singleSharedRoom.isAC == true
+                ? FeaturedChip("With A/C", Color(0xFF192A56))
+                : Chip(label: Text("Without A/C")),
+            singleSharedRoom.isNegotiable == true
+                ? FeaturedChip("Neotiable", Color(0xFF192A56))
+                : Chip(label: Text("No bargain")),
           ],
         ),
         Card(
           child: ListTile(
             leading:
                 Text("Rental :", style: TextStyle(fontWeight: FontWeight.bold)),
-            trailing: Text("Rs. ${singleAnnex.rental}/month",
+            trailing: Text("Rs. ${singleSharedRoom.rental}/month",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
@@ -54,8 +58,8 @@ class _SingleAdState extends State<SingleAd> {
               "Keymoney :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("Rs. ${singleAnnex.keyMoney}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("Rs. ${singleSharedRoom.keymoney}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -64,8 +68,8 @@ class _SingleAdState extends State<SingleAd> {
               "Rooms :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.rooms}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleSharedRoom.beds}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -74,8 +78,8 @@ class _SingleAdState extends State<SingleAd> {
               "Barthrooms :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.bathrooms}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleSharedRoom.bathrooms}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -84,8 +88,8 @@ class _SingleAdState extends State<SingleAd> {
               "For :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.forWhome}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleSharedRoom.forWhome}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
         Card(
@@ -94,19 +98,23 @@ class _SingleAdState extends State<SingleAd> {
               "Description :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing:
-                Text("${singleAnnex.desctiption}", style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text("${singleSharedRoom.description}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         Center(
           child: Container(
-            height: 50,
-            color: Colors.green,
-            child: Center(
-              child: Text("${singleAnnex.contactNumber}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-            )
-          ),
+              height: 50,
+              color: Colors.green,
+              child: Center(
+                child: Text(
+                  "${singleSharedRoom.contactNumber}",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              )),
         )
       ],
     );
@@ -153,3 +161,4 @@ class _SingleAdState extends State<SingleAd> {
         ));
   }
 }
+
