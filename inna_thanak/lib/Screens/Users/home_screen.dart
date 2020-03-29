@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
+import 'package:inna_thanak/Widgets/bottom_navigation.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
