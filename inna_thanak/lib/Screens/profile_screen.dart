@@ -18,29 +18,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _body() {
     return ListView(
       children: <Widget>[
-        Container(
-          child: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Container(
-                child: new BackdropFilter(
-                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: new Container(
-                    decoration:
-                        new BoxDecoration(color: Colors.white.withOpacity(0.0)),
-                  ),
-                ),
-                height: MediaQuery.of(context).size.height / 3,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://orig07.deviantart.net/d05d/f/2016/073/f/2/thebestcubehd_by_eonofre12-d9v50ra.png"))),
+        _profileImageCard(),
+        SizedBox(height: 50),
+        _profileDetails(),
+        // SizedBox(height: 50),
+        _tempAd(),
+        _tempAd(),
+        _tempAd(),
+      ],
+    );
+  }
+
+  Widget _profileImageCard() {
+    return Container(
+      child: Stack(
+        overflow: Overflow.visible,
+        children: <Widget>[
+          Container(
+            child: new BackdropFilter(
+              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: new Container(
+                decoration:
+                    new BoxDecoration(color: Colors.white.withOpacity(0.0)),
               ),
-              Positioned(
-                child: Card(
-                  color: Color(0xFF192A56),
-                    child: Container(
+            ),
+            height: MediaQuery.of(context).size.height / 3,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        "https://orig07.deviantart.net/d05d/f/2016/073/f/2/thebestcubehd_by_eonofre12-d9v50ra.png"))),
+          ),
+          Positioned(
+            child: Card(
+                color: Color(0xFF192A56),
+                child: Container(
                   height: MediaQuery.of(context).size.height / 7,
                   width: MediaQuery.of(context).size.width,
                   child: Row(
@@ -53,28 +65,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Text(
                         "Ads posted\n (12)",
-                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ],
                   ),
                 )),
-                right: MediaQuery.of(context).size.width / 15,
-                left: MediaQuery.of(context).size.width / 15,
-                top: MediaQuery.of(context).size.height / 4,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-            ],
+            right: MediaQuery.of(context).size.width / 15,
+            left: MediaQuery.of(context).size.width / 15,
+            top: MediaQuery.of(context).size.height / 4,
           ),
+          SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _profileDetails() {
+    return Container(
+      child: Align(
+        widthFactor: 3,
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              Icon(Icons.mail_outline),
+              Text("fljdnfkjd")
+            ],),
+             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              Icon(Icons.mail_outline),
+              Text("fljdnfd")
+            ],)
+          ],
         ),
-        SizedBox(
-          height: 50,
-        ),
-        _tempAd(),
-        _tempAd(),
-        _tempAd(),
-      ],
+      ),
     );
   }
 
@@ -91,6 +120,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       "Borella",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20.0),
+                    )),
+                Align(
+                    alignment: Alignment.bottomLeft,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        height: 10,
+                        width: MediaQuery.of(context).size.width / 3,
+                        color: Color(0xFFe81029),
+                      ),
                     )),
                 SizedBox(
                   height: 10.0,
