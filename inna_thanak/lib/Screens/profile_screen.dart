@@ -20,7 +20,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: <Widget>[
         _profileImageCard(),
         SizedBox(height: 50),
-        _profileDetails(),
         // SizedBox(height: 50),
         _tempAd(),
         _tempAd(),
@@ -82,31 +81,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  Widget _profileDetails() {
-    return Container(
-      child: Align(
-        widthFactor: 3,
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-              Icon(Icons.mail_outline),
-              Text("fljdnfkjd")
-            ],),
-             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-              Icon(Icons.mail_outline),
-              Text("fljdnfd")
-            ],)
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _tempAd() {
     return Card(
       child: Container(

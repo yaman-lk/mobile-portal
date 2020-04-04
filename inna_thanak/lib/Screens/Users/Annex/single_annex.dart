@@ -102,7 +102,7 @@ class _SingleAdState extends State<SingleAd> {
               "Description :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing: Text("${singleAnnex.desctiption}",
+            trailing: Text("${singleAnnex.description}",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
