@@ -9,11 +9,11 @@ class Annex {
   int keyMoney;
   int rental;
   bool isNegotiable;
-  String desctiption;
+  String description;
   String location;
   String contactNumber;
 
-  Annex(this.id,this.rooms,this.bathrooms,this.isAC,this.desctiption,this.forWhome,this.isFurniture,this.isKitchen,this.isNegotiable,this.keyMoney,this.rental,this.location,this.contactNumber);
+  Annex(this.id,this.rooms,this.bathrooms,this.isAC,this.description,this.forWhome,this.isFurniture,this.isKitchen,this.isNegotiable,this.keyMoney,this.rental,this.location,this.contactNumber);
 
   static List<Annex> fetchAll(){
     return[
