@@ -1,8 +1,10 @@
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
+import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/Users/Annex/annex_screen.dart';
 import 'package:inna_thanak/Screens/postad_screen.dart';
+import 'package:inna_thanak/Screens/profile_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -40,17 +42,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFF192A56),
-        title: Text("Inna Thanak"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          )
-        ],
-      ),
       body: Stack(
         children: <Widget>[
           Padding(
@@ -80,11 +71,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         );
         break;
       case 3:
-        slogan = Container(
-          child: Center(
-            child: Text("Your profile screen"),
-          ),
-        );
+        slogan = ProfileScreen();
         break;
     }
 
