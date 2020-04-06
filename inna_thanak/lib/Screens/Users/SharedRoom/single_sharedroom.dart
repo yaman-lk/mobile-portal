@@ -1,7 +1,7 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
-import 'package:inna_thanak/Screens/Widgets/features_chips.dart';
+import 'package:inna_thanak/Widgets/bottom_navigation.dart';
+import 'package:inna_thanak/Widgets/features_chips.dart';
 import 'package:inna_thanak/models/sharedroom_model.dart';
 
 class SingleSharedRoom extends StatefulWidget {

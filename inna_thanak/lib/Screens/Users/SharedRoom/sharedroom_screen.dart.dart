@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_fade/image_fade.dart';
 import 'package:inna_thanak/Screens/Users/SharedRoom/single_sharedroom.dart';
-import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
 import 'package:inna_thanak/Utils/network.dart';
+import 'package:inna_thanak/Widgets/bottom_navigation.dart';
 import 'package:inna_thanak/models/sharedroom_model.dart';
 
 class SharedRoomAdlist extends StatefulWidget {

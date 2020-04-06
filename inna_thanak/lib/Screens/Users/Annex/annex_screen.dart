@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inna_thanak/Screens/Users/Annex/single_annex.dart';
-import 'package:inna_thanak/Screens/Widgets/bottom_navigation.dart';
 import 'package:inna_thanak/Utils/network.dart';
 import 'package:inna_thanak/models/annex_model.dart';
 import 'package:image_fade/image_fade.dart';
@@ -16,19 +15,7 @@ class _AdListState extends State<AdList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF192A56),
-        leading: Icon(Icons.person),
-        title: Text("Inna Thanak"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          )
-        ],
-      ),
       body: _body(),
-      bottomNavigationBar: BottomNavigation(),
     );
   }
 
