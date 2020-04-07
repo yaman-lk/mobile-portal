@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inna_thanak/Screens/Resources/resources.dart';
+import 'package:inna_thanak/Widgets/lable_text_field.dart';
 
 class PostAdScreen extends StatefulWidget {
   @override
@@ -19,10 +21,9 @@ class _PostAdScreenState extends State<PostAdScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(120, 5, 120, 10),
               child: Container(
-                  //this container has the image add icon
                   child: ButtonTheme(
                       child: IconButton(
-                icon: Icon(Icons.add_a_photo),
+                icon: Icon(Icons.add_a_photo,color: Color(Resources.primarycolor),),
                 onPressed: () {
                   print("Tapped");
                 },
@@ -30,70 +31,51 @@ class _PostAdScreenState extends State<PostAdScreen> {
               ))),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Price",
-                      hintText: "Price",
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30))))),
+              width: MediaQuery.of(context).size.width - 20,
+              child: LabelTextField(
+                hintText: "Price",
+                labelText: "Price",
+              ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "KeyMoney",
-                      hintText: "KeyMoney",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30))))),
+              width: MediaQuery.of(context).size.width - 20,
+              child: LabelTextField(
+                hintText: "Key money",
+                labelText: "Key money expected",
+              ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Address",
-                      hintText: "Address",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30))))),
+              width: MediaQuery.of(context).size.width - 20,
+              child: LabelTextField(
+                hintText: "Address",
+                labelText: "Location address",
+              ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Rooms",
-                      hintText: "Rooms",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30))))),
+              width: MediaQuery.of(context).size.width - 20,
+              child: LabelTextField(
+                hintText: "Rooms",
+                labelText: "Number of rooms",
+              ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Beds",
-                      hintText: "Beds",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30))))),
+              width: MediaQuery.of(context).size.width - 20,
+              child: LabelTextField(
+                hintText: "Beds",
+                labelText: "Number of beds",
+              ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Description",
-                      hintText: "Description",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30))))),
+              width: MediaQuery.of(context).size.width - 20,
+              child: LabelTextField(
+                hintText: "Description",
+                labelText: "Description",
+              ),
             ),
           ],
         )),
