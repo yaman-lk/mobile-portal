@@ -8,8 +8,6 @@ class PostAdScreen extends StatefulWidget {
 }
 
 class _PostAdScreenState extends State<PostAdScreen> {
-  //final GlobalKey _formKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
