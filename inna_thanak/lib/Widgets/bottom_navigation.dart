@@ -1,7 +1,6 @@
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
-import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/Users/Annex/annex_screen.dart';
 import 'package:inna_thanak/Screens/postad_screen.dart';
 import 'package:inna_thanak/Screens/profile_screen.dart';
