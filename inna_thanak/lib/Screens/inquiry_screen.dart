@@ -34,6 +34,10 @@ class _InquiryScreenState extends State<InquiryScreen> {
         Center(
           child: Icon(Icons.camera_enhance,size: 60,),
         ),
+
+        Center(
+          child: RaisedButton(onPressed: null),
+        )
       ],
     );
   }
