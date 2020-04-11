@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _createAccountLabel() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.symmetric(vertical: 35),
       alignment: Alignment.bottomCenter,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -198,11 +198,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 _title(),
                 SizedBox(
-                  height: 50,
+                  height: 40,
                 ),
                 _emailPasswordWidget(),
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 _submitButton(),
                 Container(
@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.center,
             child: _createAccountLabel(),
           ),
         ],
