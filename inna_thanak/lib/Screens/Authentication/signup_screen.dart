@@ -38,8 +38,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
     respose = await dio.post(_registerUrl, data: data);
     respose.statusCode == 200
-        ? Toast.show("Success", context)
-        : Toast.show("failed", context);
+        ? Toast.show("Successfully registered", context)
+        : Toast.show("Registration failed check credintials ", context);
     print(respose);
   }
 
