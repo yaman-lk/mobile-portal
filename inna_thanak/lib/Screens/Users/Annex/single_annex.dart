@@ -92,7 +92,7 @@ class _SingleAdState extends State<SingleAd> {
               "For :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing: Text("${singleAnnex.forWhome}",
+            trailing: Text("${singleAnnex.recidentType}",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),

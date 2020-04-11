@@ -18,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
+  Response response;
+
   String authenticateurl = "${NetworkDataPaser.url}" + "authenticateUser";
 
   Future authenticatio() async {
@@ -26,11 +28,15 @@ class _LoginPageState extends State<LoginPage> {
       "password": _password.text,
     };
     final dio = Dio();
-    Response response = await dio.post(authenticateurl, data: data);
+    response = await dio.post(authenticateurl, data: data);
 
     response.statusCode == 200
         ? Toast.show("Login success", context)
         : Toast.show("Login failed", context);
+
+        NetworkDataPaser.accesstoken = response.data['token'];
+
+    print(NetworkDataPaser.accesstoken);
   }
 
   Widget _backButton() {
