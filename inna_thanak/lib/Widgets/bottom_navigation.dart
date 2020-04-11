@@ -5,6 +5,7 @@ import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/Users/Annex/annex_screen.dart';
 import 'package:inna_thanak/Screens/postad_screen.dart';
 import 'package:inna_thanak/Screens/profile_screen.dart';
+import 'package:inna_thanak/Utils/network.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -67,7 +68,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         slogan = LoginPage();
         break;
       case 3:
-        slogan = ProfileScreen();
+        slogan = NetworkDataPaser.accesstoken == null?LoginPage():ProfileScreen();
         break;
     }
 

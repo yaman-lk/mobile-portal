@@ -69,7 +69,11 @@ class _AdListState extends State<AdList> {
                                     )),
                                 IconButton(
                                     icon: Icon(Icons.more_vert),
-                                    onPressed: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>InquiryScreen()))),
+                                    onPressed: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                InquiryScreen()))),
                               ],
                             ),
                             SizedBox(
@@ -114,7 +118,7 @@ class _AdListState extends State<AdList> {
                             ),
                             ListTile(
                               leading: Text(
-                                " Rooms: ${annexs[index].rooms} \n Bathrooms: ${annexs[index].bathrooms}\n For: ${annexs[index].forWhome}",
+                                " Rooms: ${annexs[index].rooms} \n Bathrooms: ${annexs[index].bathrooms}\n For: ${annexs[index].recidentType}",
                                 style: TextStyle(fontSize: 15),
                               ),
                               trailing: Text(
