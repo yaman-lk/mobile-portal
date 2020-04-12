@@ -3,6 +3,7 @@ import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/Users/Annex/annex_screen.dart';
+import 'package:inna_thanak/Screens/all_bordings.dart';
 import 'package:inna_thanak/Screens/postad_screen.dart';
 import 'package:inna_thanak/Screens/profile_screen.dart';
 import 'package:inna_thanak/Utils/network.dart';
@@ -59,7 +60,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     Widget slogan;
     switch (selectedPos) {
       case 0:
-        slogan = AdList();
+        slogan = AllBordings();
         break;
       case 1:
         slogan = PostAdScreen();

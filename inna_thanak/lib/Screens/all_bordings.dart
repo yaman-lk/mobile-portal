@@ -1,39 +1,41 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:inna_thanak/Screens/Users/Annex/single_annex.dart';
+import 'package:image_fade/image_fade.dart';
 import 'package:inna_thanak/Screens/inquiry_screen.dart';
 import 'package:inna_thanak/Utils/network.dart';
-import 'package:inna_thanak/models/annex_model.dart';
-import 'package:image_fade/image_fade.dart';
 
-class AdList extends StatefulWidget {
+import 'Users/Annex/single_annex.dart';
+
+class AllBordings extends StatefulWidget {
   @override
-  _AdListState createState() => _AdListState();
+  _AllBordingsState createState() => _AllBordingsState();
 }
 
-class _AdListState extends State<AdList> {
-  static final annexs = Annex.fetchAll();
+class _AllBordingsState extends State<AllBordings> {
+  List allBordings;
 
-  
+  //Making http request
 
-  void _showPopupMenu(Offset offset) async {
-    double left = offset.dx;
-    double top = offset.dy;
-    await showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(100, 100, 100, 100),
-      items: [
-        PopupMenuItem(
-          child: Text("View"),
-        ),
-        PopupMenuItem(
-          child: Text("Edit"),
-        ),
-        PopupMenuItem(
-          child: Text("Delete"),
-        ),
-      ],
-      elevation: 8.0,
-    );
+  Future getallBordings(BuildContext context) async {
+    var dio = Dio();
+
+    Response response = await dio.get('${NetworkDataPaser.url}' + 'allBordings',
+        options: Options(headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        }));
+
+    response.statusCode == 200
+        ? allBordings = response.data
+        : allBordings = null;
+
+    print(response.data[0]['images'][0]);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.getallBordings(context);
   }
 
   @override
@@ -48,9 +50,11 @@ class _AdListState extends State<AdList> {
   }
 
   Widget _singleAdCard() {
-    return annexs.length != null && annexs != null && annexs.length > 0
+    return allBordings != null &&
+            allBordings.length != null &&
+            allBordings.length > 0
         ? ListView.builder(
-            itemCount: annexs.length != null ? annexs.length : 0,
+            itemCount: allBordings.length != null ? allBordings.length : 0,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: Container(
@@ -64,7 +68,13 @@ class _AdListState extends State<AdList> {
                                 Container(
                                     alignment: new FractionalOffset(0.0, 1.0),
                                     child: Text(
-                                      annexs[index].location,
+                                      allBordings[index]['bordingType']
+                                              .toString()
+                                              .toUpperCase() +
+                                          " in " +
+                                          allBordings[index]['location']
+                                              .toString()
+                                              .toUpperCase(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20.0),
@@ -116,22 +126,26 @@ class _AdListState extends State<AdList> {
                                 )),
                               ),
                               image: NetworkImage(
-                                  "http://www.bayfieldinn.com/sites/bayfieldinn.com/files/content/rentals/DSC_0084.JPG"),
+                                  "$allBordings[index]['images'][0]" != null
+                                      ? "$allBordings[index]['images'][0]"
+                                      : ""),
                             ),
                             ListTile(
                               leading: Text(
-                                " Rooms: ${annexs[index].rooms} \n Bathrooms: ${annexs[index].bathrooms}\n For: ${annexs[index].recidentType}",
+                                allBordings[index]['bordingType'] == "house"
+                                    ? " Rooms: ${allBordings[index]['numberOfRooms']} \n Bathrooms: ${allBordings[index]['numberOfBathrooms']}\n"
+                                    : " Rooms: ${allBordings[index]['numberOfRooms']} \n Bathrooms: ${allBordings[index]['numberOfBathrooms']}\n",
                                 style: TextStyle(fontSize: 15),
                               ),
                               trailing: Text(
-                                "Rs. ${annexs[index].rental}/month",
+                                "Rs. ${allBordings[index]['rental']}/month",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             )
                           ],
                         ),
                         onTap: () {
-                          NetworkDataPaser.passedID = annexs[index].id;
+                          NetworkDataPaser.passedID = allBordings[index]['_id'];
                           Navigator.push(
                               context,
                               MaterialPageRoute(
