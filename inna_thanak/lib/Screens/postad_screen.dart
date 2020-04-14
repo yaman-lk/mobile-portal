@@ -23,7 +23,10 @@ class _PostAdScreenState extends State<PostAdScreen> {
               child: Container(
                   child: ButtonTheme(
                       child: IconButton(
-                icon: Icon(Icons.add_a_photo,color: Color(Resources.primarycolor),),
+                icon: Icon(
+                  Icons.add_a_photo,
+                  color: Color(Resources.primarycolor),
+                ),
                 onPressed: () {
                   print("Tapped");
                 },
