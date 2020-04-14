@@ -1,10 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_fade/image_fade.dart';
+import 'package:inna_thanak/Utils/network.dart';
 import 'dart:async';
-
-import 'package:inna_thanak/models/profile_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -12,13 +13,29 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Future<Profile> futureProfile;
+  Map profileDetail;
+
+  Future fetchProfile() async {
+    var dio = Dio();
+    Response response = await dio.get("${NetworkDataPaser.url}" + "userProfile",
+        options: Options(headers: {
+          HttpHeaders.authorizationHeader:
+              "Bearer " + NetworkDataPaser.accesstoken
+        }));
+
+    response.statusCode == 200
+        ? print(response.data)
+        : print(response.statusCode);
+
+    profileDetail = response.data;
+    print(profileDetail['user']['name']);
+  }
+
   Response response;
-  List profileDetails;
 
   @override
   void initState() {
-    futureProfile = Profile.getProfile();
+    this.fetchProfile();
     super.initState();
   }
 
@@ -35,7 +52,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _profileImageCard(),
         SizedBox(height: 50),
         // SizedBox(height: 50),
-        _tempAd(),
+        InkWell(
+          child: _tempAd(),
+          onTap: () => fetchProfile(),
+        ),
         _tempAd(),
         _tempAd(),
       ],
@@ -76,8 +96,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             "https://orig07.deviantart.net/d05d/f/2016/073/f/2/thebestcubehd_by_eonofre12-d9v50ra.png"),
                         minRadius: 40,
                       ),
+                      // profileDetail != null && profileDetail.length != null
                       Text(
-                        "Ads posted\n (12)",
+                        "${profileDetail['user']['name']} \n ${profileDetail['user']['email']}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       ),
@@ -106,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                     alignment: new FractionalOffset(0.0, 1.0),
                     child: Text(
-                      "Borella",
+                      "Borella".toUpperCase(),
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     )),
