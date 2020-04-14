@@ -1,6 +1,10 @@
 import 'dart:ui';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_fade/image_fade.dart';
+import 'dart:async';
+
+import 'package:inna_thanak/models/profile_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -8,6 +12,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<Profile> futureProfile;
+  Response response;
+  List profileDetails;
+
+  @override
+  void initState() {
+    futureProfile = Profile.getProfile();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
   Widget _tempAd() {
     return Card(
       child: Container(

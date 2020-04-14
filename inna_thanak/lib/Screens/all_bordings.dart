@@ -1,44 +1,60 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_fade/image_fade.dart';
-import 'package:inna_thanak/Screens/Users/SharedRoom/single_sharedroom.dart';
+import 'package:inna_thanak/Screens/inquiry_screen.dart';
 import 'package:inna_thanak/Utils/network.dart';
-import 'package:inna_thanak/Widgets/bottom_navigation.dart';
-import 'package:inna_thanak/models/sharedroom_model.dart';
 
-class SharedRoomAdlist extends StatefulWidget {
+import 'Users/Annex/single_annex.dart';
+
+class AllBordings extends StatefulWidget {
   @override
-  _SharedRoomAdlistState createState() => _SharedRoomAdlistState();
+  _AllBordingsState createState() => _AllBordingsState();
 }
 
-class _SharedRoomAdlistState extends State<SharedRoomAdlist> {
-  static final sharedrooms = SharedRoom.fetchAll();
+class _AllBordingsState extends State<AllBordings> {
+  List allBordings;
+
+  //Making http request
+
+  Future getallBordings(BuildContext context) async {
+    var dio = Dio();
+
+    Response response = await dio.get('${NetworkDataPaser.url}' + 'allBordings',
+        options: Options(headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        }));
+
+    response.statusCode == 200
+        ? allBordings = response.data
+        : allBordings = null;
+
+    print(response.data[0]['images'][0]);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.getallBordings(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-        backgroundColor: Color(0xFF192A56),
-        leading: Icon(Icons.person),
-        title: Text("Inna Thanak"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          )
-        ],
-      ),
       body: _body(),
-      bottomNavigationBar: BottomNavigation(),
     );
   }
 
-  Widget _body(){
+  Widget _body() {
     return _singleAdCard();
   }
 
-  Widget _singleAdCard(){
-     return sharedrooms.length != null && sharedrooms != null && sharedrooms.length > 0
+  Widget _singleAdCard() {
+    return allBordings != null &&
+            allBordings.length != null &&
+            allBordings.length > 0
         ? ListView.builder(
-            itemCount: sharedrooms.length != null ? sharedrooms.length : 0,
+            itemCount: allBordings.length != null ? allBordings.length : 0,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: Container(
@@ -46,14 +62,32 @@ class _SharedRoomAdlistState extends State<SharedRoomAdlist> {
                     child: InkWell(
                         child: Column(
                           children: <Widget>[
-                            Container(
-                                alignment: new FractionalOffset(0.0, 1.0),
-                                child: Text(
-                                  sharedrooms[index].location,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0),
-                                )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                    alignment: new FractionalOffset(0.0, 1.0),
+                                    child: Text(
+                                      allBordings[index]['bordingType']
+                                              .toString()
+                                              .toUpperCase() +
+                                          " in " +
+                                          allBordings[index]['location']
+                                              .toString()
+                                              .toUpperCase(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0),
+                                    )),
+                                IconButton(
+                                    icon: Icon(Icons.more_vert),
+                                    onPressed: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                InquiryScreen()))),
+                              ],
+                            ),
                             SizedBox(
                               height: 10.0,
                             ),
@@ -92,26 +126,30 @@ class _SharedRoomAdlistState extends State<SharedRoomAdlist> {
                                 )),
                               ),
                               image: NetworkImage(
-                                  "http://www.bayfieldinn.com/sites/bayfieldinn.com/files/content/rentals/DSC_0084.JPG"),
+                                  "$allBordings[index]['images'][0]" != null
+                                      ? "$allBordings[index]['images'][0]"
+                                      : ""),
                             ),
                             ListTile(
                               leading: Text(
-                                " Rooms: ${sharedrooms[index].beds} \n Bathrooms: ${sharedrooms[index].bathrooms}\n For: ${sharedrooms[index].forWhome}",
+                                allBordings[index]['bordingType'] == "house"
+                                    ? " Rooms: ${allBordings[index]['numberOfRooms']} \n Bathrooms: ${allBordings[index]['numberOfBathrooms']}\n"
+                                    : " Rooms: ${allBordings[index]['numberOfRooms']} \n Bathrooms: ${allBordings[index]['numberOfBathrooms']}\n",
                                 style: TextStyle(fontSize: 15),
                               ),
                               trailing: Text(
-                                "Rs. ${sharedrooms[index].rental}/month",
+                                "Rs. ${allBordings[index]['rental']}/month",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             )
                           ],
                         ),
                         onTap: () {
-                          NetworkDataPaser.passedID = sharedrooms[index].id;
+                          NetworkDataPaser.passedID = allBordings[index]['_id'];
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SingleSharedRoom()));
+                                  builder: (context) => SingleAd()));
                           print(NetworkDataPaser.passedID);
                         })),
               );
@@ -119,4 +157,4 @@ class _SharedRoomAdlistState extends State<SharedRoomAdlist> {
           )
         : Container();
   }
-  }
+}

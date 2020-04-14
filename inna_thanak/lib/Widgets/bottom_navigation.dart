@@ -3,8 +3,10 @@ import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/Users/Annex/annex_screen.dart';
+import 'package:inna_thanak/Screens/all_bordings.dart';
 import 'package:inna_thanak/Screens/postad_screen.dart';
 import 'package:inna_thanak/Screens/profile_screen.dart';
+import 'package:inna_thanak/Utils/network.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -58,20 +60,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
     Widget slogan;
     switch (selectedPos) {
       case 0:
-        slogan = AdList();
+        slogan = AllBordings();
         break;
       case 1:
         slogan = PostAdScreen();
         break;
       case 2:
-        slogan = Container(
-          child: Center(
-            child: Text("Your favorites screen"),
-          ),
-        );
+        slogan = LoginPage();
         break;
       case 3:
-        slogan = ProfileScreen();
+        slogan = NetworkDataPaser.accesstoken == null?LoginPage():ProfileScreen();
         break;
     }
 

@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:inna_thanak/Screens/Authentication/signup_screen.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:inna_thanak/Utils/network.dart';
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -12,6 +15,30 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+
+  Response response;
+
+  String authenticateurl = "${NetworkDataPaser.url}" + "authenticateUser";
+
+  Future authenticatio() async {
+    final Map<String, dynamic> data = {
+      "email": _email.text,
+      "password": _password.text,
+    };
+    final dio = Dio();
+    response = await dio.post(authenticateurl, data: data);
+
+    response.statusCode == 200
+        ? Toast.show("Login success", context)
+        : Toast.show("Login failed", context);
+
+        NetworkDataPaser.accesstoken = response.data['token'];
+
+    print(NetworkDataPaser.accesstoken);
+  }
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -33,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _entryField(String title, {bool isPassword = false}) {
+  Widget _emailEntryField(String title, {bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -47,6 +74,32 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           TextField(
+              controller: _email,
+              obscureText: isPassword,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  fillColor: Color(0xfff3f3f4),
+                  filled: true))
+        ],
+      ),
+    );
+  }
+
+  Widget _passwordEntryField(String title, {bool isPassword = false}) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextField(
+              controller: _password,
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
@@ -58,25 +111,30 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _submitButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Color(0xFF192A56),
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.grey.shade200,
-              offset: Offset(2, 4),
-              blurRadius: 3,
-              spreadRadius: 2)
-        ],
+    return InkWell(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Color(0xFF192A56),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.grey.shade200,
+                offset: Offset(2, 4),
+                blurRadius: 3,
+                spreadRadius: 2)
+          ],
+        ),
+        child: Text(
+          'Login',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
       ),
-      child: Text(
-        'Login',
-        style: TextStyle(fontSize: 20, color: Colors.white),
-      ),
+      onTap: (){
+        authenticatio();
+      },
     );
   }
 
@@ -127,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _createAccountLabel() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.symmetric(vertical: 35),
       alignment: Alignment.bottomCenter,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -172,8 +230,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email id"),
-        _entryField("Password", isPassword: true),
+        _emailEntryField("Email id"),
+        _passwordEntryField("Password", isPassword: true),
       ],
     );
   }
@@ -198,11 +256,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 _title(),
                 SizedBox(
-                  height: 50,
+                  height: 40,
                 ),
                 _emailPasswordWidget(),
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 _submitButton(),
                 Container(
@@ -222,7 +280,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.center,
             child: _createAccountLabel(),
           ),
         ],

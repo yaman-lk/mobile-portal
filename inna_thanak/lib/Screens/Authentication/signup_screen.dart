@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Widgets/bazier_container.dart';
+import 'package:toast/toast.dart';
+import 'dart:async';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.title}) : super(key: key);
@@ -12,6 +17,32 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  TextEditingController _name = TextEditingController();
+
+  Response respose;
+
+  List responseJson;
+  String _registerUrl = "http://192.168.8.101:3000/api/registerUser";
+
+  //http request handler
+
+  Future getRegistered(apiUrl) async {
+    var dio = Dio();
+    final Map<String, dynamic> data = {
+      "name": _name.text,
+      "email": _email.text,
+      "password": _password.text,
+    };
+
+    respose = await dio.post(_registerUrl, data: data);
+    respose.statusCode == 200
+        ? Toast.show("Successfully registered", context)
+        : Toast.show("Registration failed check credintials ", context);
+    print(respose);
+  }
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -33,7 +64,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _entryField(String title, {bool isPassword = false}) {
+  Widget _emailEntryField(String title, {bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -47,6 +78,57 @@ class _SignUpPageState extends State<SignUpPage> {
             height: 10,
           ),
           TextField(
+              controller: _email,
+              obscureText: isPassword,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  fillColor: Color(0xfff3f3f4),
+                  filled: true))
+        ],
+      ),
+    );
+  }
+
+  Widget _passwordEntryField(String title, {bool isPassword = false}) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextField(
+              controller: _password,
+              obscureText: isPassword,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  fillColor: Color(0xfff3f3f4),
+                  filled: true))
+        ],
+      ),
+    );
+  }
+
+  Widget _nameEntryField(String title, {bool isPassword = false}) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextField(
+              controller: _name,
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
@@ -58,25 +140,32 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _submitButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Color(0xFF192A56),
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.grey.shade200,
-              offset: Offset(2, 4),
-              blurRadius: 5,
-              spreadRadius: 2)
-        ],
+    return InkWell(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Color(0xFF192A56),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.grey.shade200,
+                offset: Offset(2, 4),
+                blurRadius: 5,
+                spreadRadius: 2)
+          ],
+        ),
+        child: Text(
+          'Register Now',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
       ),
-      child: Text(
-        'Register Now',
-        style: TextStyle(fontSize: 20, color: Colors.white),
-      ),
+      onTap: () {
+        print("before http");
+        getRegistered(_registerUrl);
+        print("after http");
+      },
     );
   }
 
@@ -131,9 +220,9 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Username"),
-        _entryField("Email id"),
-        _entryField("Password", isPassword: true),
+        _nameEntryField("Username"),
+        _emailEntryField("Email id"),
+        _passwordEntryField("Password", isPassword: true),
       ],
     );
   }
