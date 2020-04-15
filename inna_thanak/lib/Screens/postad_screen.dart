@@ -78,6 +78,13 @@ class _PostAdScreenState extends State<PostAdScreen> {
                 labelText: "Description",
               ),
             ),
+            SizedBox(height: 10),
+            Container(
+                child: RaisedButton(
+              onPressed: () {},
+              textTheme: ButtonTextTheme.accent,
+              child: Text("Preview"),
+            ))
           ],
         )),
       ),
