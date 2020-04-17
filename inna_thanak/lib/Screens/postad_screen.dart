@@ -12,8 +12,7 @@ class PostAdScreen extends StatefulWidget {
 
 class _PostAdScreenState extends State<PostAdScreen> {
   int _typeForFeatures;
-  int _typeForBeds;
-  Widget _extraFacilities(String _on, String _off,IconData _icon) {
+  Widget _extraFacilities(String _on, String _off, IconData _icon) {
     return LiteRollingSwitch(
       //initial value
       value: true,
@@ -21,7 +20,7 @@ class _PostAdScreenState extends State<PostAdScreen> {
       textOff: _off,
       colorOn: Colors.greenAccent[700],
       colorOff: Colors.redAccent[700],
-      iconOn:_icon,
+      iconOn: _icon,
       iconOff: Icons.remove_circle_outline,
       textSize: 14.0,
       onChanged: (bool state) {
@@ -38,9 +37,9 @@ class _PostAdScreenState extends State<PostAdScreen> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          _extraFacilities("A/C", "No A/C",Icons.ac_unit),
+          _extraFacilities("A/C", "No A/C", Icons.ac_unit),
           SizedBox(width: 10),
-          _extraFacilities("Fans", "No Fans",FontAwesomeIcons.fan),
+          _extraFacilities("Fans", "No Fans", FontAwesomeIcons.fan),
         ],
       ),
     );
@@ -53,11 +52,11 @@ class _PostAdScreenState extends State<PostAdScreen> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          _extraFacilities("Furniture", "No Firniture",FontAwesomeIcons.chair),
+          _extraFacilities("Furniture", "No Firniture", FontAwesomeIcons.chair),
           SizedBox(width: 10),
-          _extraFacilities("Kitchen", "No Kitchen",FontAwesomeIcons.cookie),
+          _extraFacilities("Kitchen", "No Kitchen", FontAwesomeIcons.cookie),
           SizedBox(width: 10),
-          _extraFacilities("A/C", "No A/C",Icons.ac_unit),
+          _extraFacilities("A/C", "No A/C", Icons.ac_unit),
         ],
       ),
     );
