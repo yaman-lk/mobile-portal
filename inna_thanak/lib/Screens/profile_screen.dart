@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:dio/dio.dart';
@@ -14,6 +13,17 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Map profileDetail;
+  List postedAds;
+  String name;
+  String email;
+  
+
+  @override
+  void initState() {
+    super.initState();
+    this.fetchPostedBordings();
+    this.fetchProfile();
+  }
 
   Future fetchProfile() async {
     var dio = Dio();
@@ -22,21 +32,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
           HttpHeaders.authorizationHeader:
               "Bearer " + NetworkDataPaser.accesstoken
         }));
-
     response.statusCode == 200
-        ? print(response.data)
+        ? profileDetail = response.data
         : print(response.statusCode);
 
-    profileDetail = response.data;
-    print(profileDetail['user']['name']);
+        setState(() {
+        name = profileDetail['user']['name'];
+        email = profileDetail['user']['email'];
+          
+        });
+    print(name);
   }
 
-  Response response;
+  Future fetchPostedBordings() async {
+    var dio = Dio();
+    Response detailresponse = await dio.get(
+        "${NetworkDataPaser.url}" + "postedBordings",
+        options: Options(headers: {
+          HttpHeaders.authorizationHeader:
+              "Bearer " + NetworkDataPaser.accesstoken
+        }));
 
-  @override
-  void initState() {
-    this.fetchProfile();
-    super.initState();
+    detailresponse.statusCode == 200
+        ? postedAds = detailresponse.data
+        : print(detailresponse.statusCode);
+    print(postedAds[0]['location']);
   }
 
   @override
@@ -50,14 +70,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ListView(
       children: <Widget>[
         _profileImageCard(),
-        SizedBox(height: 50),
-        // SizedBox(height: 50),
-        InkWell(
-          child: _tempAd(),
-          onTap: () => fetchProfile(),
-        ),
-        _tempAd(),
-        _tempAd(),
+        SizedBox(height: 50,),
+        _tempAd()
       ],
     );
   }
@@ -80,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                        "https://orig07.deviantart.net/d05d/f/2016/073/f/2/thebestcubehd_by_eonofre12-d9v50ra.png"))),
+                        "https://api.randomuser.me/api/portrait/men/1.jpg"))),
           ),
           Positioned(
             child: Card(
@@ -93,12 +107,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: <Widget>[
                       CircleAvatar(
                         backgroundImage: NetworkImage(
-                            "https://orig07.deviantart.net/d05d/f/2016/073/f/2/thebestcubehd_by_eonofre12-d9v50ra.png"),
+                            "https://api.randomuser.me/api/portrait/men/1.jpg"),
                         minRadius: 40,
                       ),
                       // profileDetail != null && profileDetail.length != null
                       Text(
-                        "${profileDetail['user']['name']} \n ${profileDetail['user']['email']}",
+                        "$name \n $email",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       ),
@@ -118,82 +132,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _tempAd() {
-    return Card(
-      child: Container(
-          padding: EdgeInsets.only(top: 10.0, left: 5.0, right: 5.0),
-          child: InkWell(
-            child: Column(
-              children: <Widget>[
-                Container(
-                    alignment: new FractionalOffset(0.0, 1.0),
-                    child: Text(
-                      "Borella".toUpperCase(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    )),
-                Align(
-                    alignment: Alignment.bottomLeft,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        height: 10,
-                        width: MediaQuery.of(context).size.width / 3,
-                        color: Color(0xFFe81029),
+    return postedAds != null && postedAds.length != null && postedAds.length > 0
+        ? ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: postedAds.length != null ? postedAds.length : 0,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                child: Container(
+                    padding: EdgeInsets.only(top: 10.0, left: 5.0, right: 5.0),
+                    child: InkWell(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                              alignment: new FractionalOffset(0.0, 1.0),
+                              child: postedAds!=null?Text(
+                                "${postedAds[index]['bordingType']}".toUpperCase() + " in " + "${postedAds[index]['location']}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0),
+                              ):Text("Still loading")),
+                          Align(
+                              alignment: Alignment.bottomLeft,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  height: 10,
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  color: Color(0xFFe81029),
+                                ),
+                              )),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          ImageFade(
+                            height: MediaQuery.of(context).size.height / 4,
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Widget child,
+                                dynamic exception) {
+                              return Container(
+                                color: Color(0xFF6F6D6A),
+                                child: Center(
+                                    child: Icon(Icons.warning,
+                                        color: Colors.black26, size: 128.0)),
+                              );
+                            },
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent event) {
+                              if (event == null) {
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                    value: event.expectedTotalBytes == null
+                                        ? 0.0
+                                        : event.cumulativeBytesLoaded /
+                                            event.expectedTotalBytes),
+                              );
+                            },
+                            placeholder: Container(
+                              color: Color(0xFFCFCDCA),
+                              child: Center(
+                                  child: Icon(
+                                Icons.photo,
+                                color: Colors.white30,
+                                size: 128.0,
+                              )),
+                            ),
+                            image: NetworkImage(
+                                "http://www.bayfieldinn.com/sites/bayfieldinn.com/files/content/rentals/DSC_0084.JPG"),
+                          ),
+                          ListTile(
+                            leading: Text(
+                              " Rooms: ${postedAds[index]['numberOfRooms']} \n Bathrooms: ${postedAds[index]['numberOfBathrooms']}\n",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            trailing: Text(
+                              "Rs. ${postedAds[index]['rental']}/month",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
                       ),
                     )),
-                SizedBox(
-                  height: 10.0,
-                ),
-                ImageFade(
-                  height: MediaQuery.of(context).size.height / 4,
-                  fit: BoxFit.cover,
-                  errorBuilder:
-                      (BuildContext context, Widget child, dynamic exception) {
-                    return Container(
-                      color: Color(0xFF6F6D6A),
-                      child: Center(
-                          child: Icon(Icons.warning,
-                              color: Colors.black26, size: 128.0)),
-                    );
-                  },
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent event) {
-                    if (event == null) {
-                      return child;
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(
-                          value: event.expectedTotalBytes == null
-                              ? 0.0
-                              : event.cumulativeBytesLoaded /
-                                  event.expectedTotalBytes),
-                    );
-                  },
-                  placeholder: Container(
-                    color: Color(0xFFCFCDCA),
-                    child: Center(
-                        child: Icon(
-                      Icons.photo,
-                      color: Colors.white30,
-                      size: 128.0,
-                    )),
-                  ),
-                  image: NetworkImage(
-                      "http://www.bayfieldinn.com/sites/bayfieldinn.com/files/content/rentals/DSC_0084.JPG"),
-                ),
-                ListTile(
-                  leading: Text(
-                    " Rooms: 2 \n Bathrooms: 2\n For: girls}",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  trailing: Text(
-                    "Rs. 5000/month",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
+              );
+            })
+        : Container(
+            child: Center(
+              child: Text("No posted ads found by you"),
             ),
-          )),
-    );
+          );
   }
 }

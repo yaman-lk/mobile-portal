@@ -13,29 +13,6 @@ class AdList extends StatefulWidget {
 class _AdListState extends State<AdList> {
   static final annexs = Annex.fetchAll();
 
-  
-
-  void _showPopupMenu(Offset offset) async {
-    double left = offset.dx;
-    double top = offset.dy;
-    await showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(100, 100, 100, 100),
-      items: [
-        PopupMenuItem(
-          child: Text("View"),
-        ),
-        PopupMenuItem(
-          child: Text("Edit"),
-        ),
-        PopupMenuItem(
-          child: Text("Delete"),
-        ),
-      ],
-      elevation: 8.0,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
