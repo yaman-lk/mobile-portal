@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_fade/image_fade.dart';
@@ -14,8 +16,13 @@ class AllBordings extends StatefulWidget {
 class _AllBordingsState extends State<AllBordings> {
   List allBordings;
 
-  //Making http request
+  @override
+  void initState() {
+    super.initState();
+    this.getallBordings(context);
+  }
 
+  //Making http request
   Future getallBordings(BuildContext context) async {
     var dio = Dio();
 
@@ -25,17 +32,16 @@ class _AllBordingsState extends State<AllBordings> {
           'Accept': 'application/json'
         }));
 
-    response.statusCode == 200
-        ? allBordings = response.data
-        : allBordings = null;
-
-    print(response.data[0]['images'][0]);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    this.getallBordings(context);
+    if (this.mounted) {
+      setState(() {
+        response.statusCode == 200
+            ? allBordings = response.data
+            : allBordings = null;
+      });
+      dispose();
+    }
+    print(response.data);
+    print("Fuck");
   }
 
   @override
@@ -58,27 +64,29 @@ class _AllBordingsState extends State<AllBordings> {
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: Container(
-                    padding: EdgeInsets.only(top: 10.0, left: 5.0, right: 5.0),
                     child: InkWell(
                         child: Column(
                           children: <Widget>[
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Container(
-                                    alignment: new FractionalOffset(0.0, 1.0),
-                                    child: Text(
-                                      allBordings[index]['bordingType']
-                                              .toString()
-                                              .toUpperCase() +
-                                          " in " +
-                                          allBordings[index]['location']
-                                              .toString()
-                                              .toUpperCase(),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0),
-                                    )),
+                                allBordings != null
+                                    ? Container(
+                                        alignment:
+                                            new FractionalOffset(0.0, 1.0),
+                                        child: Text(
+                                          allBordings[index]['bordingType']
+                                                  .toString()
+                                                  .toUpperCase() +
+                                              " in " +
+                                              allBordings[index]['location']
+                                                  .toString()
+                                                  .toUpperCase(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0),
+                                        ))
+                                    : Container(),
                                 IconButton(
                                     icon: Icon(Icons.more_vert),
                                     onPressed: () => Navigator.push(
@@ -92,14 +100,18 @@ class _AllBordingsState extends State<AllBordings> {
                               height: 10.0,
                             ),
                             ImageFade(
+                              width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height / 4,
+                              image: NetworkImage(allBordings != null
+                                  ? allBordings[index]['images'][0]
+                                  : ""),
                               fit: BoxFit.cover,
                               errorBuilder: (BuildContext context, Widget child,
                                   dynamic exception) {
                                 return Container(
                                   color: Color(0xFF6F6D6A),
                                   child: Center(
-                                      child: Icon(Icons.warning,
+                                      child: Icon(Icons.music_video,
                                           color: Colors.black26, size: 128.0)),
                                 );
                               },
@@ -125,10 +137,6 @@ class _AllBordingsState extends State<AllBordings> {
                                   size: 128.0,
                                 )),
                               ),
-                              image: NetworkImage(
-                                  "$allBordings[index]['images'][0]" != null
-                                      ? "$allBordings[index]['images'][0]"
-                                      : ""),
                             ),
                             ListTile(
                               leading: Text(
@@ -155,6 +163,10 @@ class _AllBordingsState extends State<AllBordings> {
               );
             },
           )
-        : Container();
+        : Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 }
