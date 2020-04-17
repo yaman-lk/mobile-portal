@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_fade/image_fade.dart';
+import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/inquiry_screen.dart';
 import 'package:inna_thanak/Utils/network.dart';
 
@@ -38,10 +39,8 @@ class _AllBordingsState extends State<AllBordings> {
             ? allBordings = response.data
             : allBordings = null;
       });
-      dispose();
+      // dispose();
     }
-    print(response.data);
-    print("Fuck");
   }
 
   @override
@@ -71,10 +70,8 @@ class _AllBordingsState extends State<AllBordings> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 allBordings != null
-                                    ? Container(
-                                        alignment:
-                                            new FractionalOffset(0.0, 1.0),
-                                        child: Text(
+                                    ? Column(children: [
+                                        Text(
                                           allBordings[index]['bordingType']
                                                   .toString()
                                                   .toUpperCase() +
@@ -85,7 +82,22 @@ class _AllBordingsState extends State<AllBordings> {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20.0),
-                                        ))
+                                        ),
+                                        Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              child: Container(
+                                                height: 10,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3,
+                                                color: Color(0xFFe81029),
+                                              ),
+                                            )),
+                                      ])
                                     : Container(),
                                 IconButton(
                                     icon: Icon(Icons.more_vert),
@@ -153,12 +165,11 @@ class _AllBordingsState extends State<AllBordings> {
                           ],
                         ),
                         onTap: () {
-                          NetworkDataPaser.passedID = allBordings[index]['_id'];
+                          NetworkDataPaser.singleAd = allBordings[index];
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SingleAd()));
-                          print(NetworkDataPaser.passedID);
                         })),
               );
             },

@@ -16,7 +16,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List postedAds;
   String name;
   String email;
-  
 
   @override
   void initState() {
@@ -36,11 +35,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ? profileDetail = response.data
         : print(response.statusCode);
 
-        setState(() {
-        name = profileDetail['user']['name'];
-        email = profileDetail['user']['email'];
-          
-        });
+    setState(() {
+      name = profileDetail['user']['name'];
+      email = profileDetail['user']['email'];
+    });
     print(name);
   }
 
@@ -70,7 +68,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ListView(
       children: <Widget>[
         _profileImageCard(),
-        SizedBox(height: 50,),
+        SizedBox(
+          height: 50,
+        ),
         _tempAd()
       ],
     );
@@ -146,12 +146,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: <Widget>[
                           Container(
                               alignment: new FractionalOffset(0.0, 1.0),
-                              child: postedAds!=null?Text(
-                                "${postedAds[index]['bordingType']}".toUpperCase() + " in " + "${postedAds[index]['location']}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0),
-                              ):Text("Still loading")),
+                              child: postedAds != null
+                                  ? Text(
+                                      "${postedAds[index]['bordingType']}"
+                                              .toUpperCase() +
+                                          " in " +
+                                          "${postedAds[index]['location']}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0),
+                                    )
+                                  : Text("Still loading")),
                           Align(
                               alignment: Alignment.bottomLeft,
                               child: ClipRRect(
@@ -166,42 +171,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 10.0,
                           ),
                           ImageFade(
-                            height: MediaQuery.of(context).size.height / 4,
-                            fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context, Widget child,
-                                dynamic exception) {
-                              return Container(
-                                color: Color(0xFF6F6D6A),
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height / 4,
+                              image: NetworkImage(postedAds != null
+                                  ? postedAds[index]['images'][0]
+                                  : ""),
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context, Widget child,
+                                  dynamic exception) {
+                                return Container(
+                                  color: Color(0xFF6F6D6A),
+                                  child: Center(
+                                      child: Icon(Icons.music_video,
+                                          color: Colors.black26, size: 128.0)),
+                                );
+                              },
+                              loadingBuilder: (BuildContext context,
+                                  Widget child, ImageChunkEvent event) {
+                                if (event == null) {
+                                  return child;
+                                }
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                      value: event.expectedTotalBytes == null
+                                          ? 0.0
+                                          : event.cumulativeBytesLoaded /
+                                              event.expectedTotalBytes),
+                                );
+                              },
+                              placeholder: Container(
+                                color: Color(0xFFCFCDCA),
                                 child: Center(
-                                    child: Icon(Icons.warning,
-                                        color: Colors.black26, size: 128.0)),
-                              );
-                            },
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent event) {
-                              if (event == null) {
-                                return child;
-                              }
-                              return Center(
-                                child: CircularProgressIndicator(
-                                    value: event.expectedTotalBytes == null
-                                        ? 0.0
-                                        : event.cumulativeBytesLoaded /
-                                            event.expectedTotalBytes),
-                              );
-                            },
-                            placeholder: Container(
-                              color: Color(0xFFCFCDCA),
-                              child: Center(
-                                  child: Icon(
-                                Icons.photo,
-                                color: Colors.white30,
-                                size: 128.0,
-                              )),
+                                    child: Icon(
+                                  Icons.photo,
+                                  color: Colors.white30,
+                                  size: 128.0,
+                                )),
+                              ),
                             ),
-                            image: NetworkImage(
-                                "http://www.bayfieldinn.com/sites/bayfieldinn.com/files/content/rentals/DSC_0084.JPG"),
-                          ),
                           ListTile(
                             leading: Text(
                               " Rooms: ${postedAds[index]['numberOfRooms']} \n Bathrooms: ${postedAds[index]['numberOfBathrooms']}\n",
