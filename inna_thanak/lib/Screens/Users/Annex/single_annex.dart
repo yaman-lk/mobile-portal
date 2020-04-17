@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:inna_thanak/Utils/network.dart';
 import 'package:inna_thanak/Widgets/bottom_navigation.dart';
 import 'package:inna_thanak/Widgets/features_chips.dart';
-import 'package:inna_thanak/models/annex_model.dart';
 
 class SingleAd extends StatefulWidget {
   @override
   _SingleAdState createState() => _SingleAdState();
 }
 
+
 class _SingleAdState extends State<SingleAd> {
 
-  static final allAnnexs = Annex.fetchAll();
-  final singleAnnex = allAnnexs[2];
+  // Map singleAdCLicked = NetworkDataPaser.singleAd;
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,25 +40,22 @@ class _SingleAdState extends State<SingleAd> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            singleAnnex.isKitchen == true
+            NetworkDataPaser.singleAd['kitchen'] == true
                 ? FeaturedChip("Kitchen", Color(0xFF192A56))
                 : FeaturedChip("No kitchen", Colors.black),
-            singleAnnex.isAC == true
+            NetworkDataPaser.singleAd['ac'] == true
                 ? FeaturedChip("With A/C", Color(0xFF192A56))
                 : Chip(label: Text("Without A/C")),
-            singleAnnex.isFurniture == true
+            NetworkDataPaser.singleAd['furniture'] == true
                 ? FeaturedChip("With furniture", Color(0xFF192A56))
                 : FeaturedChip("Without furniture", Colors.black),
-            singleAnnex.isNegotiable == true
-                ? FeaturedChip("Neotiable", Color(0xFF192A56))
-                : Chip(label: Text("No bargain")),
           ],
         ),
         Card(
           child: ListTile(
             leading:
                 Text("Rental :", style: TextStyle(fontWeight: FontWeight.bold)),
-            trailing: Text("Rs. ${singleAnnex.rental}/month",
+            trailing: Text("Rs. ${NetworkDataPaser.singleAd['rental']}/month",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
@@ -62,7 +65,7 @@ class _SingleAdState extends State<SingleAd> {
               "Keymoney :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing: Text("Rs. ${singleAnnex.keyMoney}",
+            trailing: Text("Rs. ${NetworkDataPaser.singleAd['keymoney']}",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
@@ -72,7 +75,7 @@ class _SingleAdState extends State<SingleAd> {
               "Rooms :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing: Text("${singleAnnex.rooms}",
+            trailing: Text("${NetworkDataPaser.singleAd['numberOfRooms']}",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
@@ -82,27 +85,27 @@ class _SingleAdState extends State<SingleAd> {
               "Barthrooms :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing: Text("${singleAnnex.bathrooms}",
+            trailing: Text("${NetworkDataPaser.singleAd['numberOfBathrooms']}",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
-        Card(
-          child: ListTile(
-            leading: Text(
-              "For :",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            trailing: Text("${singleAnnex.recidentType}",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-        ),
+        // Card(
+        //   child: ListTile(
+        //     leading: Text(
+        //       "For :",
+        //       style: TextStyle(fontWeight: FontWeight.bold),
+        //     ),
+        //     trailing: Text("${singleAnnex.recidentType}",
+        //         style: TextStyle(fontWeight: FontWeight.bold)),
+        //   ),
+        // ),
         Card(
           child: ListTile(
             leading: Text(
               "Description :",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing: Text("${singleAnnex.description}",
+            trailing: Text("${NetworkDataPaser.singleAd['description']}",
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
@@ -115,7 +118,7 @@ class _SingleAdState extends State<SingleAd> {
               color: Colors.green,
               child: Center(
                 child: Text(
-                  "${singleAnnex.contactNumber}",
+                  "7398239237",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               )),
