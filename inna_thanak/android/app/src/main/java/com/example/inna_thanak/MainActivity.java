@@ -1,4 +1,4 @@
-package com.example.inna_thanak;
+package com.innovativeapps.inna_thanak;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

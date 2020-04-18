@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "137997328216",
+    "firebase_url": "https://inna-thanak.firebaseio.com",
+    "project_id": "inna-thanak",
+    "storage_bucket": "inna-thanak.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137997328216:android:cb682f9af7097c44510f2d",
+        "android_client_info": {
+          "package_name": "com.innovativeapps.inna_thanak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137997328216-hitshn9gagto2f225uh5b2p3rv70e8i7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_L1mxTDUnHiGzGXVunF89U3u41vrCbHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137997328216-hitshn9gagto2f225uh5b2p3rv70e8i7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
