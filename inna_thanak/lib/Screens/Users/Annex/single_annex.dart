@@ -1,17 +1,40 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:inna_thanak/Utils/network.dart';
 import 'package:inna_thanak/Widgets/features_chips.dart';
+import 'package:toast/toast.dart';
 
 class SingleAd extends StatefulWidget {
   @override
   _SingleAdState createState() => _SingleAdState();
 }
 
-
 class _SingleAdState extends State<SingleAd> {
-
   // Map singleAdCLicked = NetworkDataPaser.singleAd;
+
+  Future markFavorite() async {
+    var dio = Dio();
+
+    Response response =
+        await dio.put("${NetworkDataPaser.url}" + "addFavourite",
+            options: Options(
+              headers: {
+                HttpHeaders.authorizationHeader:
+                    "Bearer " + NetworkDataPaser.accesstoken
+              },
+            ),
+            data: {"favouriteBording": NetworkDataPaser.passedID.toString()});
+
+    if (response.statusCode == 200) {
+      Toast.show("Mark as favourite", context);
+    } else {
+      Toast.show("Something is not fine", context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,7 +179,9 @@ class _SingleAdState extends State<SingleAd> {
             "  Add to \nfavourites",
             style: TextStyle(fontSize: 12.0, color: Colors.white),
           ),
-          onPressed: () {},
+          onPressed: () {
+            markFavorite();
+          },
         ));
   }
 }
