@@ -15,12 +15,12 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   List favorites;
 
-   @override
+  @override
   void initState() {
     this.fetchFavorites();
     super.initState();
   }
-  
+
   Future fetchFavorites() async {
     var dio = Dio();
     Response response = await dio.get(
@@ -30,16 +30,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               "Bearer " + NetworkDataPaser.accesstoken
         }));
 
-        if(response.statusCode == 200){
-          setState(() {
-            favorites = response.data;
-          });
-        }else{
-          print("Error");
-        }
-
-    // response.statusCode == 200 ? favorites = response.data : print("Error");
-
+    if (response.statusCode == 200) {
+      setState(() {
+        favorites = response.data;
+      });
+    } else {
+      print("Error");
+    }
     print(response.data);
   }
 
@@ -147,6 +144,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 ),
                 onTap: () {
                   NetworkDataPaser.singleAd = favorites[index];
+                  NetworkDataPaser.isfavorite = true;
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SingleAd()));
                 },

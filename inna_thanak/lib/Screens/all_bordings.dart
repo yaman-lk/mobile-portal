@@ -6,6 +6,7 @@ import 'package:image_fade/image_fade.dart';
 import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/inquiry_screen.dart';
 import 'package:inna_thanak/Utils/network.dart';
+import 'package:inna_thanak/Utils/network.dart' as prefix0;
 
 import 'Users/Annex/single_annex.dart';
 
@@ -165,6 +166,7 @@ class _AllBordingsState extends State<AllBordings> {
                           ],
                         ),
                         onTap: () {
+                          prefix0.NetworkDataPaser.passedID = allBordings[index]['_id'].toString();
                           NetworkDataPaser.singleAd = allBordings[index];
                           Navigator.push(
                               context,
