@@ -6,6 +6,8 @@ import 'package:image_fade/image_fade.dart';
 import 'package:inna_thanak/Utils/network.dart';
 import 'dart:async';
 
+import 'Users/Annex/single_annex.dart';
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -94,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                        "https://api.randomuser.me/api/portrait/men/1.jpg"))),
+                        "https://www.weloveglasses.com/wp-content/uploads/2016/11/black-slash-gold-forever21-spitfire-pro-tool-sunglasses-screen.jpg"))),
           ),
           Positioned(
             child: Card(
@@ -107,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: <Widget>[
                       CircleAvatar(
                         backgroundImage: NetworkImage(
-                            "https://api.randomuser.me/api/portrait/men/1.jpg"),
+                            "https://www.weloveglasses.com/wp-content/uploads/2016/11/black-slash-gold-forever21-spitfire-pro-tool-sunglasses-screen.jpg"),
                         minRadius: 40,
                       ),
                       // profileDetail != null && profileDetail.length != null
@@ -138,39 +140,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
             shrinkWrap: true,
             itemCount: postedAds.length != null ? postedAds.length : 0,
             itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: Container(
-                    padding: EdgeInsets.only(top: 10.0, left: 5.0, right: 5.0),
-                    child: InkWell(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                              alignment: new FractionalOffset(0.0, 1.0),
-                              child: postedAds != null
-                                  ? Text(
-                                      "${postedAds[index]['bordingType']}"
-                                              .toUpperCase() +
-                                          " in " +
-                                          "${postedAds[index]['location']}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0),
-                                    )
-                                  : Text("Still loading")),
-                          Align(
-                              alignment: Alignment.bottomLeft,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  height: 10,
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  color: Color(0xFFe81029),
-                                ),
-                              )),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          ImageFade(
+              return InkWell(
+                child: Card(
+                  child: Container(
+                      padding:
+                          EdgeInsets.only(top: 10.0, left: 5.0, right: 5.0),
+                      child: InkWell(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                                alignment: new FractionalOffset(0.0, 1.0),
+                                child: postedAds != null
+                                    ? Text(
+                                        "${postedAds[index]['bordingType']}"
+                                                .toUpperCase() +
+                                            " in " +
+                                            "${postedAds[index]['location'].toString().toLowerCase()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20.0),
+                                      )
+                                    : Text("Still loading")),
+                            Align(
+                                alignment: Alignment.bottomLeft,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    height: 10,
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    color: Color(0xFFe81029),
+                                  ),
+                                )),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            ImageFade(
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height / 4,
                               image: NetworkImage(postedAds != null
@@ -209,19 +214,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 )),
                               ),
                             ),
-                          ListTile(
-                            leading: Text(
-                              " Rooms: ${postedAds[index]['numberOfRooms']} \n Bathrooms: ${postedAds[index]['numberOfBathrooms']}\n",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            trailing: Text(
-                              "Rs. ${postedAds[index]['rental']}/month",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      ),
-                    )),
+                            ListTile(
+                              leading: Text(
+                                " Rooms: ${postedAds[index]['numberOfRooms']} \n Bathrooms: ${postedAds[index]['numberOfBathrooms']}\n",
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              trailing: Text(
+                                "Rs. ${postedAds[index]['rental']}/month",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
+                ),
+                onTap: (){
+                  NetworkDataPaser.singleAd = postedAds[index];
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SingleAd()));
+                },
               );
             })
         : Container(

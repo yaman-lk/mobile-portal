@@ -3,6 +3,7 @@ import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:inna_thanak/Screens/Authentication/signin_screen.dart';
 import 'package:inna_thanak/Screens/all_bordings.dart';
+import 'package:inna_thanak/Screens/favorites_screen.dart';
 import 'package:inna_thanak/Screens/postad_screen.dart';
 import 'package:inna_thanak/Screens/profile_screen.dart';
 import 'package:inna_thanak/Utils/network.dart';
@@ -65,7 +66,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         slogan = PostAdScreen();
         break;
       case 2:
-        slogan = LoginPage();
+        slogan = NetworkDataPaser.accesstoken == null?LoginPage():FavoriteScreen();
         break;
       case 3:
         slogan = NetworkDataPaser.accesstoken == null?LoginPage():ProfileScreen();
