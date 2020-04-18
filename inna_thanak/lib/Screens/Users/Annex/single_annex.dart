@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:inna_thanak/Utils/network.dart';
-import 'package:inna_thanak/Widgets/bottom_navigation.dart';
 import 'package:inna_thanak/Widgets/features_chips.dart';
 
 class SingleAd extends StatefulWidget {
@@ -13,12 +12,6 @@ class SingleAd extends StatefulWidget {
 class _SingleAdState extends State<SingleAd> {
 
   // Map singleAdCLicked = NetworkDataPaser.singleAd;
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +19,6 @@ class _SingleAdState extends State<SingleAd> {
         backgroundColor: Color(0xFF192A56),
       ),
       body: _body(),
-      bottomNavigationBar: BottomNavigation(),
     );
   }
 
@@ -89,16 +81,16 @@ class _SingleAdState extends State<SingleAd> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
-        // Card(
-        //   child: ListTile(
-        //     leading: Text(
-        //       "For :",
-        //       style: TextStyle(fontWeight: FontWeight.bold),
-        //     ),
-        //     trailing: Text("${singleAnnex.recidentType}",
-        //         style: TextStyle(fontWeight: FontWeight.bold)),
-        //   ),
-        // ),
+        Card(
+          child: ListTile(
+            leading: Text(
+              "For :",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            trailing: Text("${NetworkDataPaser.singleAd['residentType']}",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ),
         Card(
           child: ListTile(
             leading: Text(
