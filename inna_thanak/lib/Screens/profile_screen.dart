@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_fade/image_fade.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:inna_thanak/Utils/network.dart';
+import 'package:toast/toast.dart';
 import 'dart:async';
 
 import 'Users/Annex/single_annex.dart';
@@ -18,6 +22,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List postedAds;
   String name;
   String email;
+  String uploadUrl;
+  bool upchoose = true;
+  String url;
 
   @override
   void initState() {
@@ -40,8 +47,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       name = profileDetail['user']['name'];
       email = profileDetail['user']['email'];
+      url = profileDetail['user']['profilePictureUrl'];
     });
-    print(name);
+    print(profileDetail);
+  }
+
+  Future updateProfile() async {
+    var dio = Dio();
+    Response response = await dio.put(
+        "${NetworkDataPaser.url}" + "updateProfilePicture",
+        data: {"profPicUrl": uploadUrl},
+        options: Options(headers: {
+          HttpHeaders.authorizationHeader:
+              "Bearer " + NetworkDataPaser.accesstoken
+        }));
+
+    response.statusCode == 200
+        ? Toast.show("Successfully updated", context)
+        : Toast.show("Something is not fine", context);
   }
 
   Future fetchPostedBordings() async {
@@ -57,6 +80,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ? postedAds = detailresponse.data
         : print(detailresponse.statusCode);
     print(postedAds[0]['location']);
+  }
+
+  static File _image;
+  getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+
+    upchoose = false;
+  }
+
+  Future uploadFile() async {
+    final String fileName = DateTime.now().toString();
+    StorageReference storageReference =
+        FirebaseStorage.instance.ref().child("profile-images/$fileName");
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    // await uploadTask.onComplete;
+    print('File Uploaded');
+    uploadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    print(uploadUrl);
+
+    upchoose = true;
+
+    updateProfile();
   }
 
   @override
@@ -83,21 +132,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
-          Container(
-            child: new BackdropFilter(
-              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: new Container(
-                decoration:
-                    new BoxDecoration(color: Colors.white.withOpacity(0.0)),
-              ),
-            ),
-            height: MediaQuery.of(context).size.height / 3,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        "https://www.weloveglasses.com/wp-content/uploads/2016/11/black-slash-gold-forever21-spitfire-pro-tool-sunglasses-screen.jpg"))),
-          ),
+          _image == null
+              ? Container(
+                  child: BackdropFilter(
+                      filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: Container(
+                        decoration: new BoxDecoration(
+                            color: Colors.white.withOpacity(0.0)),
+                      )),
+                  height: MediaQuery.of(context).size.height / 3,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(url != null ? url : ""))),
+                )
+              : Container(
+                  child: BackdropFilter(
+                      filter: new ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                      child: Container(
+                        decoration: new BoxDecoration(
+                            color: Colors.white.withOpacity(0.0)),
+                      )),
+                  height: MediaQuery.of(context).size.height / 3,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover, image: FileImage(_image))),
+                ),
           Positioned(
             child: Card(
                 color: Color(0xFF192A56),
@@ -107,11 +167,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://www.weloveglasses.com/wp-content/uploads/2016/11/black-slash-gold-forever21-spitfire-pro-tool-sunglasses-screen.jpg"),
-                        minRadius: 40,
-                      ),
+                      _image == null
+                          ? CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(url != null ? url : ""),
+                              minRadius: 40,
+                            )
+                          : CircleAvatar(
+                              backgroundImage: FileImage(_image),
+                              minRadius: 40,
+                            ),
                       // profileDetail != null && profileDetail.length != null
                       Text(
                         "$name \n $email",
@@ -123,6 +188,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )),
             right: MediaQuery.of(context).size.width / 15,
             left: MediaQuery.of(context).size.width / 15,
+            top: MediaQuery.of(context).size.height / 4,
+          ),
+          Positioned(
+            child: upchoose == true
+                ? IconButton(
+                    icon: Icon(Icons.edit),
+                    color: Colors.white,
+                    onPressed: () {
+                      getImage();
+                      upchoose = false;
+                    })
+                : IconButton(
+                    icon: Icon(
+                      FontAwesomeIcons.upload,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      uploadFile();
+                      upchoose = true;
+                    }),
+            right: MediaQuery.of(context).size.width / 15,
             top: MediaQuery.of(context).size.height / 4,
           ),
           SizedBox(
@@ -228,12 +314,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       )),
                 ),
-                onTap: (){
+                onTap: () {
                   NetworkDataPaser.singleAd = postedAds[index];
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SingleAd()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SingleAd()));
                 },
               );
             })
