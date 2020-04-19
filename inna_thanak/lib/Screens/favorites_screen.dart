@@ -38,6 +38,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       print("Error");
     }
     print(response.data);
+    dispose();
   }
 
   @override
