@@ -102,11 +102,14 @@ class _AllBordingsState extends State<AllBordings> {
                                     : Container(),
                                 IconButton(
                                     icon: Icon(Icons.more_vert),
-                                    onPressed: () => Navigator.push(
+                                    onPressed: () {
+                                      NetworkDataPaser.inquiryAd = allBordings[index];
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                InquiryScreen()))),
+                                                InquiryScreen()));
+                                    }),
                               ],
                             ),
                             SizedBox(
@@ -166,7 +169,8 @@ class _AllBordingsState extends State<AllBordings> {
                           ],
                         ),
                         onTap: () {
-                          prefix0.NetworkDataPaser.passedID = allBordings[index]['_id'].toString();
+                          prefix0.NetworkDataPaser.passedID =
+                              allBordings[index]['_id'].toString();
                           NetworkDataPaser.singleAd = allBordings[index];
                           Navigator.push(
                               context,
