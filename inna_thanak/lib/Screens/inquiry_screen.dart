@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:inna_thanak/Utils/network.dart';
 import 'package:inna_thanak/Widgets/lable_text_field.dart';
 import 'package:toast/toast.dart';
@@ -15,10 +17,33 @@ class _InquiryScreenState extends State<InquiryScreen> {
   TextEditingController _reason = TextEditingController();
   TextEditingController _description = TextEditingController();
 
+  String uploadUrl;
+  static File _image;
+
   @override
   void initState() {
     super.initState();
     print(NetworkDataPaser.inquiryAd);
+  }
+
+  getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  Future uploadFile() async {
+    final String fileName = DateTime.now().toString();
+    StorageReference storageReference =
+        FirebaseStorage.instance.ref().child("inquiry-proofs/$fileName");
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    // await uploadTask.onComplete;
+    print('File Uploaded');
+    uploadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    print(uploadUrl);
+    makeInquiry();
   }
 
   Future makeInquiry() async {
@@ -28,7 +53,7 @@ class _InquiryScreenState extends State<InquiryScreen> {
       "bordingId": NetworkDataPaser.inquiryAd["_id"],
       "reason": _reason.text,
       "description": _description.text,
-      "proofUrl": "dnskjfjkfnjk",
+      "proofUrl": uploadUrl,
     };
 
     if (NetworkDataPaser.accesstoken == null) {
@@ -78,19 +103,27 @@ class _InquiryScreenState extends State<InquiryScreen> {
           textEditingController: _description,
         ),
         SizedBox(height: 15),
-        Center(
-          child: Icon(
-            Icons.camera_enhance,
-            size: 60,
-          ),
-        ),
+        _image == null
+            ? Center(
+                child: IconButton(
+                    icon: Icon(Icons.camera),
+                    onPressed: () {
+                      getImage();
+                    }))
+            : Container(
+                height: 200,
+                width: 200,
+                child: Image.file(_image),
+              ),
         Center(
           child: RaisedButton(
               child: Text("Submit"),
               onPressed: () {
-                makeInquiry();
+                NetworkDataPaser.accesstoken != null
+                    ? uploadFile()
+                    : Toast.show("Please log in to make report", context);
               }),
-        ),
+        )
       ],
     );
   }
